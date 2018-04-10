@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="col-md-12">
+    <h1>My To-Dos</h1>
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+        <tr>
+          <th class="text-center">ToDo</th>
+          <th class="text-center">Created At</th>  
+          <th class="text-center">Due Date</th>       
+          <th class="text-center">Notes</th>       
+          <th class="text-center">Status</th>       
+          <th class="text-center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="todos.length == 0"><td colspan=6>No data found</td></tr>
+        <tr *ngFor="let todo of todos" [ngStyle]="{'backgroundColor': !todo.done ? '#ffabab' : '#aedcae' }">       
+          <td>{{ todo.name }}</td>
+          <td>{{ todo.createdAt | date: 'dd-MMM-yyyy' }}</td>
+          <td>{{ todo.dueDate | date: 'dd-MMM-yyyy' }}</td>       
+          <td>{{ todo.notes }}</td>
+          <td class="text-center">{{todo.done ? 'Completed' : 'Pending'}}
+          </td>
+          <td class="text-center">
+            <button class="btn btn-info" (click)="showEditForm(todo)">
+              Edit
+            </button>
+            <button class="btn btn-danger" (click)="removeToDo(todo)">
+             Delete
+            </button>
+          </td>       
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-success" (click)="showNewForm()">
+      Add ToDo
+    </button>
+    <form *ngIf="showForm()" [formGroup]="formGroup" (ngSubmit)="saveTodo(formGroup.value)" class="needs-validation" novalidate>
+      <h2>{{headerText}}</h2>
+      <p>To-Do <input type="text" name="name" formControlName="name" required/></p>
+      <p>Due Date <input type="date" name="dueDate" formControlName="dueDate" required/></p>
+      <p>Done <input type="checkbox" name="done" formControlName="done" /></p>    
+      <p>Notes <input type="text" name="notes" formControlName="notes" /></p>
+      <p>
+        <input type="submit" class="btn btn-primary" value="Save">
+        <input type="button" class="btn btn-warning" value="Cancel" (click)="cancelEditTodo()">
+      </p>
+    </form>
+  </div>
+ </div>
